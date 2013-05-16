@@ -1,0 +1,19 @@
+---
+
+- name: Add PUIAS repository
+  copy: src=puias.repo dest=/etc/yum.repos.d/puias.repo
+
+- name: Add PUIAS GPG KEY
+  copy: src=RPM-GPG-KEY-puias dest=/etc/pki/rpm-gpg
+
+- name: Install python27 and friends
+  yum: name={{ item }} state=latest
+  with_items:
+  - python27
+  - python27-devel
+  - python27-imaging
+  - python27-matplotlib
+  - python27-nose
+  - python27-pygments
+  - python27-tools
+  - graphviz-python27

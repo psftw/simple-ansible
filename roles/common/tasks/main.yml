@@ -1,0 +1,14 @@
+---
+
+- name: Add EPEL repository
+  copy: src=epel.repo dest=/etc/yum.repos.d/epel.repo
+
+- name: Add EPEL GPG KEY
+  copy: src=RPM-GPG-KEY-EPEL-6 dest=/etc/pki/rpm-gpg
+
+- name: Install basic tools
+  yum: name={{ item }} state=latest
+  with_items:
+  - vim
+  - dstat
+
