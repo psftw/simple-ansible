@@ -6,9 +6,14 @@
 - name: Add EPEL GPG KEY
   copy: src=RPM-GPG-KEY-EPEL-6 dest=/etc/pki/rpm-gpg
 
-- name: Install basic tools
+- name: yum update -y
+  command: /usr/bin/yum update -y
+
+- name: Install some essential tools
   yum: name={{ item }} state=latest
   with_items:
   - vim
+  - screen
   - dstat
+  - man
 

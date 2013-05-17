@@ -1,4 +1,5 @@
 ---
+# setup a basic Python 2.7 stack
 
 - name: Add PUIAS repository
   copy: src=puias.repo dest=/etc/yum.repos.d/puias.repo

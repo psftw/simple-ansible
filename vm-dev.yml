@@ -4,8 +4,8 @@
 - hosts: vm-dev
   gather_facts: no
   user: root
-  port: 5022
   roles:
   - role: common
   - role: python
+  - role: rpmdev
 
