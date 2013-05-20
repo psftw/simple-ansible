@@ -1,0 +1,8 @@
+---
+# check out project sources for redistribution
+
+- hosts: dev
+  gather_facts: no
+  user: $devuser
+  roles:
+  - role: devtools-redist

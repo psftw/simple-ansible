@@ -1,0 +1,9 @@
+---
+# check out project sources for redistribution
+
+- name: create python dir
+  file: path=/home/$devuser/python state=directory
+
+- name: check out gunicorn
+  git: repo=git://github.com/benoitc/gunicorn.git dest=/home/$devuser/python/gunicorn
+

@@ -1,11 +1,11 @@
 ---
-# bootstrap a dev vm
+# create a fresh dev system
 
-- hosts: vm-dev
+- hosts: dev
   gather_facts: no
   user: root
   roles:
   - role: common
   - role: python
-  - role: rpmdev
+  - role: devtools
 

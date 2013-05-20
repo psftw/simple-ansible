@@ -1,0 +1,6 @@
+---
+
+devuser: peter
+repo:
+  name: psftw
+  signame: "psftw Repo Signer <peter@psftw.com>"

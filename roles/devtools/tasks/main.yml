@@ -1,0 +1,32 @@
+---
+# Install build tools and user
+
+- name: Install core development tools
+  yum: name=$item state=latest
+  with_items:
+    $devpackages
+
+- name: Create $devuser user account
+  user: name=$devuser generate_ssh_key=yes
+
+- name: Inject pubkey for user
+  authorized_key: user=$devuser key="${mypubkey}"
+
+- name: Copy RPM signing key
+  copy: src=RPM-GPG-KEY-${repo.name} dest=/home/$devuser owner=$devuser group=$devuser
+
+- name: Import RPM signing key
+  command: /bin/su -c "/usr/bin/gpg --import /home/$devuser/RPM-GPG-KEY-${repo.name}" $devuser
+
+- name: Create RPM directory structure
+  command: /bin/su -c "/bin/mkdir -p /home/$devuser/rpmbuild/${item}" $devuser
+  with_items:
+  - BUILD
+  - RPMS
+  - SOURCES
+  - SPECS
+  - SRPMS
+
+- name: Seed .rpmmacros
+  template: src=rpmmacros dest=/home/$devuser/.rpmmacros owner=$devuser group=$devuser
+
