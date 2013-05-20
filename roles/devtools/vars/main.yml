@@ -6,6 +6,7 @@ devpackages:
 - binutils
 - bison
 - byacc
+- createrepo
 - cscope
 - ctags
 - cvs
