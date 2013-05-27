@@ -1,2 +1,2 @@
 [dev]
-localhost ansible_ssh_port=5022
+localhost ansible_ssh_port=6022
