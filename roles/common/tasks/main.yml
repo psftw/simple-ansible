@@ -1,15 +1,15 @@
 ---
 
-- name: Add EPEL repository
+- name: add EPEL repository
   copy: src=epel.repo dest=/etc/yum.repos.d/epel.repo
 
-- name: Add EPEL GPG KEY
+- name: add EPEL GPG KEY
   copy: src=RPM-GPG-KEY-EPEL-6 dest=/etc/pki/rpm-gpg
 
 - name: yum update -y
   command: /usr/bin/yum update -y
 
-- name: Install some essential tools
+- name: install some essential tools
   yum: name={{ item }} state=latest
   with_items:
   - vim

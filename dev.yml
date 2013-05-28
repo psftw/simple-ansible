@@ -8,4 +8,4 @@
   - role: common
   - role: python
   - role: devtools
-
+  - role: nginx
