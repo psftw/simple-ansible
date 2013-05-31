@@ -1,7 +1,7 @@
 ---
 
 - name: add nginx repository
-  copy: src=nginx.repo dest=/etc/yum.repos.d/epel.repo
+  copy: src=nginx.repo dest=/etc/yum.repos.d/nginx.repo
 
 - name: install nginx
   yum: name=nginx state=latest
