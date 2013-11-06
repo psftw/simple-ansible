@@ -1,3 +1,0 @@
-%_topdir $HOME/rpmbuild
-%_signature gpg
-%_gpg_name {{ repo.signame }}

@@ -1,0 +1,9 @@
+### Name: JustHub Repository for el6 - CD
+### URL: http://justhub.org/
+[justhub]
+name = el6 - justhub.org - CD
+baseurl = http://sherkin.justhub.org/el6
+enabled = 1
+protect = 0
+gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-justhub-mail
+gpgcheck = 1

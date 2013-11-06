@@ -1,0 +1,10 @@
+---
+# setup my user account
+
+- name: create user account
+  user: name=peter generate_ssh_key=yes
+
+- name: inject pubkeys
+  authorized_key: user=peter key="$item"
+  with_items: pubkeys
+

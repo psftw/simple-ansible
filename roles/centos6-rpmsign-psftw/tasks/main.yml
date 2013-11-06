@@ -1,0 +1,24 @@
+---
+# setup to build/sign RPMs as psftw
+
+- name: import RPM signing key
+  rpm_key: key=https://psftw.com/RPM-GPG-KEY-psftw
+
+- name: create RPM dir structure BUILD
+  file: path=/home/peter/rpmbuild/BUILD state=directory
+
+- name: create RPM dir structure RPMS
+  file: path=/home/peter/rpmbuild/RPMS state=directory
+
+- name: create RPM dir structure SOURCES
+  file: path=/home/peter/rpmbuild/SOURCES state=directory
+
+- name: create RPM dir structure SPECS
+  file: path=/home/peter/rpmbuild/SPECS state=directory
+
+- name: create RPM dir structure SRPMS
+  file: path=/home/peter/rpmbuild/SRPMS state=directory
+
+- name: seed .rpmmacros
+  template: src=rpmmacros.j2 dest=/home/peter/.rpmmacros owner=peter group=peter
+

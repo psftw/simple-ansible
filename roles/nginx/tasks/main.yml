@@ -1,7 +1,14 @@
 ---
 
-- name: add nginx repository
+- name: copy nginx.repo to yum.repos.d
   copy: src=nginx.repo dest=/etc/yum.repos.d/nginx.repo
 
+- name: copy nginx GPG KEY
+  copy: src=RPM-GPG-KEY-nginx dest=/root
+
+- name: install nginx GPG KEY
+  rpm_key: state=present key=/root/RPM-GPG-KEY-nginx
+
 - name: install nginx
-  yum: name=nginx state=latest
+  yum: name=nginx state=present
+

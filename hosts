@@ -1,2 +1,6 @@
-[dev]
-localhost ansible_ssh_port=6022
+beast
+beast2
+zenprime
+
+centos6dev
+centos6build

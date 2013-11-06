@@ -1,0 +1,14 @@
+---
+# justhub.org maintains RPMs for the Haskell Platform
+
+- name: copy justhub.repo to yum.repos.d
+  copy: src=justhub.repo dest=/etc/yum.repos.d/justhub.repo
+
+- name: copy justhub GPG KEY
+  copy: src=RPM-GPG-KEY-justhub-mail dest=/root
+
+- name: install justhub GPG KEY
+  rpm_key: state=present key=/root/RPM-GPG-KEY-justhub-mail
+
+- name: install Haskell
+  yum: name=haskell state=present

@@ -1,11 +1,5 @@
 ---
-# setup a basic Python 2.7 stack
-
-- name: add PUIAS repository
-  copy: src=puias.repo dest=/etc/yum.repos.d/puias.repo
-
-- name: add PUIAS GPG KEY
-  copy: src=RPM-GPG-KEY-puias dest=/etc/pki/rpm-gpg
+# Install Python27 packages from PUIAS repository
 
 - name: install python27 and friends
   yum: name={{ item }} state=latest

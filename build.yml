@@ -1,0 +1,14 @@
+---
+
+- hosts: centos6build
+  user: root
+  roles:
+  - role: epel
+  - role: puias
+  - role: python27
+  - role: centos6-common
+  - role: centos6-devtools
+  - role: justhub
+  - role: nginx
+  - role: jenkins
+  - role: peter

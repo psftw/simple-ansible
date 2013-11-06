@@ -1,0 +1,13 @@
+---
+
+- name: copy jenkins.repo to yum.repos.d
+  copy: src=jenkins.repo dest=/etc/yum.repos.d/jenkins.repo
+
+- name: copy jenkins GPG KEY
+  copy: src=RPM-GPG-KEY-jenkins dest=/root
+
+- name: install jenkins GPG KEY
+  rpm_key: state=present key=/root/RPM-GPG-KEY-jenkins
+
+- name: install jenkins
+  yum: name=jenkins state=present

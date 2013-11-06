@@ -1,0 +1,11 @@
+---
+
+- name: copy epel.repo to yum.repos.d
+  copy: src=epel.repo dest=/etc/yum.repos.d/epel.repo
+
+- name: copy EPEL GPG KEY
+  copy: src=RPM-GPG-KEY-EPEL-6 dest=/root
+
+- name: install EPEL GPG KEY
+  rpm_key: state=present key=/root/RPM-GPG-KEY-EPEL-6
+

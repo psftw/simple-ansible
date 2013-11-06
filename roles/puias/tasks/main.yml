@@ -1,0 +1,11 @@
+---
+
+- name: copy puias.repo to yum.repos.d
+  copy: src=puias.repo dest=/etc/yum.repos.d/puias.repo
+
+- name: copy PUIAS GPG KEY
+  copy: src=RPM-GPG-KEY-puias dest=/root
+
+- name: install PUIAS GPG KEY
+  rpm_key: key=RPM-GPG-KEY-puias
+

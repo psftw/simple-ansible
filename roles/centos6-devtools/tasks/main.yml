@@ -1,0 +1,14 @@
+---
+
+- name: install "Development tools" group
+  yum: name="@Development tools" state=present
+
+- name: install some additional libraries and tools
+  yum: name={{ item }} state=present
+  with_items:
+  - ansible
+  - java-1.7.0-openjdk
+  - git
+  - mercurial
+  - nodejs
+  - subversion

@@ -1,6 +1,17 @@
 simple-ansible
 =================
 
-My Ansible playbooks for CentOS6.  Right now there isn't much here, but the
-plan is to flesh out a set of development and deployment playbooks for
-Python2.7-based projects.
+Some simple Ansible playbooks.
+
+Features
+----------
+
+* CentOS6-based continuous integration toolset
+
+    * Jenkins
+    * Python 2.7 ecosystem thanks to the [PUIAS][1] Computational repository.
+    * Haskell ecosystem thanks to the [justhub.org][1] repository.
+    * Node.js
+
+[1]: http://springdale.math.ias.edu/wiki/YumRepositories6
+[2]: http://www.justhub.org
