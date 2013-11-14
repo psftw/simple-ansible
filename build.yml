@@ -1,7 +1,10 @@
 ---
+# TODO: drive more configuration with variables
 
 - hosts: centos6build
   user: root
+  vars:
+    smtp_gateway: localhost
   roles:
   - role: epel
   - role: puias
@@ -11,4 +14,4 @@
   - role: justhub
   - role: nginx
   - role: jenkins
-  - role: peter
+  - role: gitlab

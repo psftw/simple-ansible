@@ -11,3 +11,7 @@
 
 - name: install jenkins
   yum: name=jenkins state=present
+
+- name: configure jenkins to run on port 8081
+  lineinfile: dest=/etc/sysconfig/jenkins line='JENKINS_PORT="8081"'
+              regexp="^JENKINS_PORT\="

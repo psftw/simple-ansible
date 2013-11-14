@@ -1,0 +1,165 @@
+---
+# note: git comes from PUIAS to get the required v1.8
+
+- name: pull in additional packages for Gitlab
+  yum: name=$item state=present
+  with_items: 
+  - git
+  - vim-enhanced
+  - readline
+  - readline-devel
+  - ncurses-devel
+  - gdbm-devel
+  - glibc-devel
+  - tcl-devel
+  - openssl-devel
+  - curl-devel
+  - expat-devel
+  - db4-devel
+  - byacc
+  - sqlite-devel
+  - gcc-c++
+  - libyaml
+  - libyaml-devel
+  - libffi
+  - libffi-devel
+  - libxml2
+  - libxml2-devel
+  - libxslt
+  - libxslt-devel
+  - libicu
+  - libicu-devel
+  - system-config-firewall-tui
+  - python-devel
+  - redis
+  - sudo
+  - wget
+  - crontabs
+  - logwatch
+  - logrotate
+  - perl-Time-HiRes
+  - sendmail-cf
+  - postgresql-server
+  - postgresql-devel
+  - python-psycopg2
+
+- name: enable and start redis service
+  service: name=redis state=started enabled=yes
+
+- name: generate /etc/mail/sendmail.mc
+  template: src=sendmail.mc.j2 dest=/etc/mail/sendmail.mc
+
+- name: enable and restart sendmail service
+  service: name=sendmail state=restarted enabled=yes
+
+- name: download specific ruby 2.0 for Gitlab
+  get_url: url=ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p247.tar.gz dest=/root
+
+- name: extract ruby tarball
+  shell: chdir=/root creates=/root/ruby-2.0.0-p247 tar xf ruby-2.0.0-p247.tar.gz
+
+- name: build and install ruby
+  shell: chdir=/root/ruby-2.0.0-p247 creates=/usr/local/bin/ruby ./configure --prefix=/usr/local && make && make install
+
+- name: get ruby bundler gem
+  shell: gem install bundler --no-ri --no-rdoc
+
+- name: setup gitlab user
+  user: name=git system=yes shell=/bin/bash comment=GitLab home=/home/git
+
+- name: clone gitlab-shell repo
+  sudo: yes
+  sudo_user: git
+  git: repo=https://github.com/gitlabhq/gitlab-shell dest=/home/git/gitlab-shell version="v1.7.4"
+
+- name: generate /home/git/gitlab-shell/config.yml
+  sudo: yes
+  sudo_user: git
+  template: src=config.yml.j2 dest=/home/git/gitlab-shell/config.yml
+
+- name: install gitlab-shell
+  sudo: yes
+  sudo_user: git
+  shell: chdir=/home/git/gitlab-shell creates=/home/git/repositories PATH=$PATH:/usr/local/bin ./bin/install
+
+- name: postgresql initdb
+  shell: creates=/var/lib/pgsql/data/pg_hba.conf service postgresql initdb
+
+- name: setup pg_hba.conf for basic ident auth 
+  template: src=pg_hba.conf.j2 dest=/var/lib/pgsql/data/pg_hba.conf
+
+- name: setup pg_ident.conf for basic ident auth
+  template: src=pg_ident.conf.j2 dest=/var/lib/pgsql/data/pg_ident.conf
+  
+- name: enable and restart postgresql
+  service: name=postgresql state=restarted enabled=yes
+
+- name: create git postgres user
+  postgresql_user: name=git password=changeme
+
+- name: create gitlab postgres database
+  postgresql_db: name=gitlab owner=git
+ 
+- name: clone gitlab repo
+  sudo: yes
+  sudo_user: git
+  git: repo=https://github.com/gitlabhq/gitlabhq.git dest=/home/git/gitlab version="6-2-stable"
+
+- name: generate /home/git/gitlab/config/gitlab.yml
+  sudo: yes
+  sudo_user: git
+  template: src=gitlab.yml.j2 dest=/home/git/gitlab/config/gitlab.yml
+
+- name: generate /home/git/gitlab/config/unicorn.rb
+  sudo: yes
+  sudo_user: git
+  template: src=unicorn.rb.j2 dest=/home/git/gitlab/config/unicorn.rb
+
+- name: copy over helper.sh
+  sudo: yes
+  sudo_user: git
+  copy: src=helper.sh dest=/home/git/gitlab/helper.sh mode=755
+
+- name: execute helper.sh to setup unicorn folders
+  sudo: yes
+  sudo_user: git
+  shell: chdir=/home/git/gitlab creates=/home/git/gitlab/tmp/sockets ./helper.sh
+
+- name: generate /home/git/gitlab/config/database.yml
+  sudo: yes
+  sudo_user: git
+  template: src=database.yml.j2 dest=/home/git/gitlab/config/database.yml mode=750
+
+- name: install charlock_holmes ruby gem
+  gem: name=charlock_holmes state=present version="0.6.9.4"
+
+- name: install dependencies with bundle
+  sudo: yes
+  sudo_user: git
+  shell: chdir=/home/git/gitlab PATH=$PATH:/usr/local/bin bundle install --deployment --without development test puma aws mysql
+
+- name: download gitlab init script
+  get_url: url=https://raw.github.com/gitlabhq/gitlab-recipes/master/init/sysvinit/centos/gitlab-unicorn
+           dest=/etc/init.d/gitlab mode=755
+
+- name: add gitlab to services
+  shell: chkconfig --add gitlab
+
+- name: enable gitlab service
+  service: name=gitlab enabled=yes
+
+- name: download gitlab nginx conf
+  get_url: url=https://raw.github.com/gitlabhq/gitlab-recipes/master/web-server/nginx/gitlab-ssl dest=/etc/nginx/conf.d/gitlab.conf
+
+- name: update server_name in nginx conf
+  command: /bin/sed -i "s:git\.example\.com:centos6build:" /etc/nginx/conf.d/gitlab.conf
+
+- name: restart nginx
+  service: name=nginx state=restarted
+
+- name: ensure nginx is in git group
+  user: name=nginx groups=git append=yes 
+
+- name: give group read access to /home/git
+  file: path=/home/git state=directory mode=750
+
