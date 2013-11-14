@@ -1,0 +1,5 @@
+---
+# tweaks for Mint15 installs
+
+- name: disable global F1 help browser behavior
+  file: path=/usr/local/bin/yelp mode=555
