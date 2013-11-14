@@ -29,14 +29,14 @@ Quick Start
 * Bootstrap a CentOS6.4 system
 * Review/modify build.yml and hosts
 * Execute build.yml with Ansible 1.3+
-* Execute some interactive commands which I have not bothered to automate:
+* Execute some interactive commands which I have not bothered to automate
 
-    # cd /etc/nginx
-    # openssl req -new -x509 -nodes -days 3560 -out gitlab.crt -keyout gitlab.key
-    # su git
-    $ cd /home/git/gitlab
-    $ bundle exec rake gitlab:setup RAILS_ENV=production
-    $ exit
-    # service gitlab start
+        # cd /etc/nginx
+        # openssl req -new -x509 -nodes -days 3560 -out gitlab.crt -keyout gitlab.key
+        # su git
+        $ cd /home/git/gitlab
+        $ bundle exec rake gitlab:setup RAILS_ENV=production
+        $ exit
+        # service gitlab start
 
 * Default GitLab credentials: admin@local.host/5iveL!fe
