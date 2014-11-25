@@ -24,8 +24,11 @@ Some simple Ansible playbooks you may find useful.
 Status
 ---------
 
-Works well enough for me, but still needs polish such as driving more configuration through
-variables.  Does not configure email.
+**Abandoned.**
+
+This was an exploration of Ansible + CentOS6 for some build systems, but should
+be ignored today since it is not maintained and no longer useful.  The code is
+left here for historical reference.
 
 Quick Start
 ------------
