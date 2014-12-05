@@ -14,4 +14,3 @@
   - role: justhub
   - role: nginx
   - role: jenkins
-  - role: gitlab
